@@ -53,9 +53,24 @@ router.put('/usuarios/:id', (req, res) => {
 
 //actualizar un producto
 
-router.get('/productos/:id', (req, res) => {
+router.put('/productos/:id', (req, res) => {
     const { id } = req.params;
-    productSchema.findById(id).then((data) => res.json(data)).catch((error) => res.json({message: error}));
+    const { name, color, size } = req.body;
+    productSchema.updateOne({ _id: id}, { $set: {name, color, size}}).then((data) => res.json(data)).catch((error) => res.json({message: error}));
+});
+
+//borrar un usuario
+
+router.delete('/usuarios/:id', (req, res) => {
+    const { id } = req.params;
+    userSchema.findByIdAndRemove({ _id: id }).then((data) => res.json(data)).catch((error) => res.json({message: error}));
+});
+
+//borrar un producto
+
+router.delete('/productos/:id', (req, res) => {
+    const { id } = req.params;
+    productSchema.findByIdAndRemove({ _id: id}).then((data) => res.json(data)).catch((error) => res.json({message: error}));
 });
 
 module.exports = router; 
